@@ -17,3 +17,8 @@ Whitespace, punctuation, and cases are kept correctly.
 Command-line tool.
 Takes an array with stock dates, and returns the best day to buy and sell.
 
+### Substrings
+Command-line tool.
+Takes a string and a dictionary array.
+Returns a hash with a frequency count of words from the dictionary contained in the input string.
+
