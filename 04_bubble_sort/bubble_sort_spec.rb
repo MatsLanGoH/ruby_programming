@@ -16,9 +16,10 @@ describe 'the bubble_sort function' do
     expect(bubble_sort(arr)).to eq(arr.sort)
   end
 
-
   it 'sorts an array correctly' do
     arr = [4, 3, 78, 2, 0, 2]
     expect(bubble_sort(arr)).to eq(arr.sort)
   end
 end
+
+
