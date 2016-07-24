@@ -4,8 +4,10 @@
 
 module Enumerable
   def my_each
-    return self
+    return self unless block_given?
+
+    for item in self
+      yield(item)
+    end
   end
-
-
 end
