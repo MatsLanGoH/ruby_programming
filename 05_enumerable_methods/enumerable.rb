@@ -28,7 +28,7 @@ module Enumerable
     return self.to_enum(:select) unless block_given?
 
     results = []
-    for item in self
+    self.my_each do |item|
       if yield(item)
         results << item
       end
@@ -36,7 +36,17 @@ module Enumerable
     results
   end
 
+
   def my_all?
+    # TODO Implicitly use { |obj| obj } if no block given
+    # How can I do this?
+    if block_given?
+      self.my_each { |item| return false unless yield(item) }
+      return true
+    else
+      self.my_each { |item| return false unless item }
+      true
+    end
   end
 
   def my_any?
@@ -54,10 +64,10 @@ module Enumerable
   def my_inject
   end
 
-end
 
 
-# Method to test my_inject
-def multiply_els(arr)
+  # Method to test my_inject
+  def multiply_els(arr)
 
+  end
 end

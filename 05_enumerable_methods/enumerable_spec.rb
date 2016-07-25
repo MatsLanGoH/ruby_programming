@@ -3,7 +3,8 @@ require 'enumerable'
 # Test arrays
 arr = ['Alice', 'Bob', 'Carol']
 brr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
-
+crr = ['ant', 'bear', 'cat']
+drr = [1, 2, 3, nil]
 
 # Test series my_each
 describe 'the my_each method' do
@@ -49,6 +50,7 @@ describe 'the my_select method' do
 
   # Test blocks
   e = Proc.new { |n| n%2 == 0 }
+  f = Proc.new { |n| n.odd? }
 
   xit 'returns self when not given a block' do
     expect(brr.my_select).to eq(brr.select)
@@ -58,7 +60,38 @@ describe 'the my_select method' do
     expect(brr.my_select(&e)).to eq(brr.select(&e))
   end
 
+  it 'returns odd values correctly' do
+    expect(brr.my_select(&f)).to eq(brr.select(&f))
+  end
 
+  it 'returns a Hash object correctly' do
+    hash = {:a => 1, :b => 2}
+    expect(brr.my_select(&f)).to eq(brr.select(&f))
+  end
 end
 
 
+# Test series my_all?
+describe 'the my_all? method' do
+
+  # Test blocks
+  g = Proc.new { |word| word.length >= 3 }
+  f = Proc.new { |word| word.length >= 4 }
+
+  it 'returns true if all collection members are truthy and no block is given' do
+    expect(crr.my_all?).to eq(true)
+  end
+
+  it 'returns false if not all collection members are truthy and no block is given' do
+    expect(drr.my_all?).to eq(false)
+  end
+
+  it 'returns true if all collection members fulfill the block condition' do
+    expect(crr.my_all?(&g)).to eq(true)
+  end
+
+  it 'returns false if not all collection members fulfill the block condition' do
+    expect(crr.my_all?(&f)).to eq(false)
+  end
+
+end
