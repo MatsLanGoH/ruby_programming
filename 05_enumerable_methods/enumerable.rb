@@ -60,6 +60,12 @@ module Enumerable
   end
 
   def my_none?
+    if block_given?
+      self.my_each { |item| return false if yield(item) }
+    else
+      self.my_each { |item| return false if item }
+    end
+    true
   end
 
   def my_count

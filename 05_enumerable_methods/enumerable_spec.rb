@@ -131,3 +131,32 @@ describe 'the my_any? method' do
   end
 
 end
+
+
+# Test series my_none?
+describe 'the my_none? method' do
+
+  # Test blocks
+  f = Proc.new { |word| word.length == 5 }
+  g = Proc.new { |word| word.length >= 4 }
+
+  it 'returns true if none of the collection members are true' do
+    expect(frr.my_none?).to eq(true)
+  end
+
+  it 'returns true for an empty array' do
+    expect([].my_none?).to eq(true)
+  end
+
+  it 'returns false if any of the collection members are true' do
+    expect(crr.my_none?).to eq(false)
+  end
+
+  it 'returns true if none if the collection members fulfill the block condition' do
+    expect(crr.my_none?(&f)).to eq(true)
+  end
+
+  it 'returns false if any of the collection members fulfill the block condition' do
+    expect(crr.my_none?(&g)).to eq(false)
+  end
+end
