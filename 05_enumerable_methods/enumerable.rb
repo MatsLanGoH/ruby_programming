@@ -23,6 +23,17 @@ module Enumerable
 
 
   def my_select
+    # TODO This doesn't seem to return the same as
+    # the internal select method. Why?
+    return self.to_enum(:select) unless block_given?
+
+    results = []
+    for item in self
+      if yield(item)
+        results << item
+      end
+    end
+    results
   end
 
   def my_all?

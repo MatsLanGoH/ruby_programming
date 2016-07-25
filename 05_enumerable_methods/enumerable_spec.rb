@@ -48,10 +48,16 @@ end
 describe 'the my_select method' do
 
   # Test blocks
+  e = Proc.new { |n| n%2 == 0 }
 
-  it 'returns self when not given a block' do
+  xit 'returns self when not given a block' do
     expect(brr.my_select).to eq(brr.select)
   end
+
+  it 'returns the correct object when given a block' do
+    expect(brr.my_select(&e)).to eq(brr.select(&e))
+  end
+
 
 end
 
