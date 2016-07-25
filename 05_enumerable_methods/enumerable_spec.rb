@@ -6,6 +6,9 @@ brr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
 crr = ['ant', 'bear', 'cat']
 drr = [1, 2, 3, nil]
 frr = [nil, false]
+grr = [1, 2, 4, 2]
+hrr = ['alpha', 'bacon', 'chunky']
+irr = []
 
 # Test series my_each
 describe 'the my_each method' do
@@ -158,5 +161,35 @@ describe 'the my_none? method' do
 
   it 'returns false if any of the collection members fulfill the block condition' do
     expect(crr.my_none?(&g)).to eq(false)
+  end
+end
+
+
+# Test series my_count
+describe 'the my_count method' do
+
+  # Test blocks
+
+  ab = Proc.new { |n| n.even? }
+
+  # Tests
+  it 'returns the correct number of items when called without block or argument' do
+    expect(grr.my_count).to eq(4)
+  end
+
+  it 'returns the correct number of items for an empty array' do
+    expect([].my_count).to eq(0)
+  end
+
+  it 'returns the correct number of items when called with an argument' do
+    expect(grr.my_count(2)).to eq(2)
+  end
+
+  it 'returns the correct number of items when called with an argument' do
+    expect(hrr.my_count('bacon')).to eq(1)
+  end
+
+  it 'returns the correct number of items when called with a block' do
+    expect(grr.my_count(&ab)).to eq(3)
   end
 end

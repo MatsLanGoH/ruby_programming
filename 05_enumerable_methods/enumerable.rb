@@ -68,7 +68,17 @@ module Enumerable
     true
   end
 
-  def my_count
+  def my_count(arg=nil)
+    # TODO is there a better way to handle 0 or 1 arguments?
+    count = 0
+    if block_given?
+      self.my_each { |item| count += 1 if yield(item) }
+    elsif arg
+      self.my_each { |item| count += 1 if item == arg }
+    else
+      count = self.length
+    end
+    count
   end
 
   def my_map
