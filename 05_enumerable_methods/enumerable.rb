@@ -42,14 +42,21 @@ module Enumerable
     # How can I do this?
     if block_given?
       self.my_each { |item| return false unless yield(item) }
-      return true
     else
       self.my_each { |item| return false unless item }
-      true
     end
+    true
   end
 
   def my_any?
+    # TODO Implicitly use { |obj| obj } if no block given
+    # How can I do this?
+    if block_given?
+      self.my_each { |item| return true if yield(item) }
+    else
+      self.my_each { |item| return true if item }
+    end
+    false
   end
 
   def my_none?
