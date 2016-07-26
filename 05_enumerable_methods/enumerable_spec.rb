@@ -8,14 +8,13 @@ drr = [1, 2, 3, nil]
 frr = [nil, false]
 grr = [1, 2, 4, 2]
 hrr = ['alpha', 'bacon', 'chunky']
-irr = []
 
 # Test series my_each
 describe 'the my_each method' do
 
   # Test blocks
-  b = Proc.new { |i| puts i }
-  c = Proc.new { |i| i.size }
+  b = proc { |i| puts i }
+  c = proc { |i| i.size }
 
   it 'returns self when not given a block' do
     expect(arr.my_each).to eq(arr)
@@ -36,7 +35,7 @@ end
 describe 'the my_each_with_index method' do
 
   # Test blocks
-  d = Proc.new { |val, idx| puts "Index: #{idx}, Value: #{val}" }
+  d = proc { |val, idx| puts "Index: #{idx}, Value: #{val}" }
 
   it 'returns self when not given a block' do
     expect(arr.my_each_with_index).to eq(arr)
@@ -53,8 +52,8 @@ end
 describe 'the my_select method' do
 
   # Test blocks
-  e = Proc.new { |n| n%2 == 0 }
-  f = Proc.new { |n| n.odd? }
+  e = proc { |n| n%2 == 0 }
+  f = proc { |n| n.odd? }
 
   xit 'returns self when not given a block' do
     expect(brr.my_select).to eq(brr.select)
@@ -79,8 +78,8 @@ end
 describe 'the my_all? method' do
 
   # Test blocks
-  g = Proc.new { |word| word.length >= 3 }
-  f = Proc.new { |word| word.length >= 4 }
+  g = proc { |word| word.length >= 3 }
+  f = proc { |word| word.length >= 4 }
 
   it 'returns true if all collection members are truthy and no block is given' do
     expect(crr.my_all?).to eq(true)
@@ -105,9 +104,9 @@ end
 describe 'the my_any? method' do
 
   # Test blocks
-  g = Proc.new { |word| word.length >= 3 }
-  f = Proc.new { |word| word.length >= 4 }
-  h = Proc.new { |word| word.length >= 10 }
+  g = proc { |word| word.length >= 3 }
+  f = proc { |word| word.length >= 4 }
+  h = proc { |word| word.length >= 10 }
 
   it 'returns true if all collection members are true' do
     expect(crr.my_any?).to eq(true)
@@ -140,8 +139,8 @@ end
 describe 'the my_none? method' do
 
   # Test blocks
-  f = Proc.new { |word| word.length == 5 }
-  g = Proc.new { |word| word.length >= 4 }
+  f = proc { |word| word.length == 5 }
+  g = proc { |word| word.length >= 4 }
 
   it 'returns true if none of the collection members are true' do
     expect(frr.my_none?).to eq(true)
@@ -170,7 +169,7 @@ describe 'the my_count method' do
 
   # Test blocks
 
-  ab = Proc.new { |n| n.even? }
+  ab = proc { |n| n.even? }
 
   # Tests
   it 'returns the correct number of items when called without block or argument' do
@@ -194,13 +193,11 @@ describe 'the my_count method' do
   end
 end
 
-
 # Test series my_map
 describe 'the my_map method' do
-
   # Test blocks
-  bb = Proc.new { |i| i*i }
-  bc = Proc.new { 'cat' }
+  bb = proc { |i| i * i }
+  bc = proc { 'cat' }
 
   # Tests
   xit 'returns an enumerator if no block is given' do
@@ -214,5 +211,31 @@ describe 'the my_map method' do
   it 'returns a new array correctly' do
     expect((1..4).map(&bc)).to eq((1..4).map(&bc))
   end
+end
 
+# Test series my_inject
+describe 'the my_inject method' do
+  # Test blocks
+  cb = proc { |sum, n| sum + n }
+  cc = proc { |product, n| product * n }
+  cd = proc do |memo, word|
+    memo.length > word.length ? memo : word
+  end
+
+  # Tests
+  it 'correctly sums some numbers using a block and inject' do
+    expect((5..10).my_inject(:+)).to eq(45)
+  end
+
+  it 'correctly sums some numbers using a block and inject' do
+    expect((5..10).my_inject(&cb)).to eq(45)
+  end
+
+  it 'correctly multiplies some numbers using a block and inject' do
+    expect((5..10).my_inject(1, &cc)).to eq(151_200)
+  end
+
+  it 'correctly finds the longest word in an array' do
+    expect(hrr.my_inject(&cd)).to eq('chunky')
+  end
 end

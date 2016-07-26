@@ -1,6 +1,6 @@
 # The Odin Project
 # Ruby Programming Track - Project 5
-# Enumerables: Recreate the .each generator.
+# Enumerables: Recreate some Enumerables.
 
 module Enumerable
   def my_each
@@ -21,58 +21,56 @@ module Enumerable
     self
   end
 
-
   def my_select
-    # TODO This line doesn't seem to return the same as
+    # TODO: This line doesn't seem to return the same as
     # the internal select method. Why?
-    return self.to_enum(:select) unless block_given?
+    return to_enum(:select) unless block_given?
 
     results = []
-    self.my_each { |item| results << item if yield(item) }
+    my_each { |item| results << item if yield(item) }
     results
   end
 
-
   def my_all?
-    # TODO Implicitly use { |obj| obj } if no block given
+    # TODO: Implicitly use { |obj| obj } if no block given
     # How can I do this?
     if block_given?
-      self.my_each { |item| return false unless yield(item) }
+      my_each { |item| return false unless yield(item) }
     else
-      self.my_each { |item| return false unless item }
+      my_each { |item| return false unless item }
     end
     true
   end
 
   def my_any?
-    # TODO Implicitly use { |obj| obj } if no block given
+    # TODO: Implicitly use { |obj| obj } if no block given
     # How can I do this?
     if block_given?
-      self.my_each { |item| return true if yield(item) }
+      my_each { |item| return true if yield(item) }
     else
-      self.my_each { |item| return true if item }
+      my_each { |item| return true if item }
     end
     false
   end
 
   def my_none?
     if block_given?
-      self.my_each { |item| return false if yield(item) }
+      my_each { |item| return false if yield(item) }
     else
-      self.my_each { |item| return false if item }
+      my_each { |item| return false if item }
     end
     true
   end
 
-  def my_count(arg=nil)
-    # TODO is there a better way to handle 0 or 1 arguments?
+  def my_count(arg = nil)
+    # TODO: is there a better way to handle 0 or 1 arguments?
     count = 0
     if block_given?
-      self.my_each { |item| count += 1 if yield(item) }
+      my_each { |item| count += 1 if yield(item) }
     elsif arg
-      self.my_each { |item| count += 1 if item == arg }
+      my_each { |item| count += 1 if item == arg }
     else
-      count = self.length
+      count = length
     end
     count
   end
@@ -80,22 +78,29 @@ module Enumerable
   def my_map
     result = []
     if block_given?
-      self.my_each { |item| result << yield(item) }
+      my_each { |item| result << yield(item) }
     else
-      # TODO Same issue as with the my_select method.
+      # TODO: Same issue as with the my_select method.
       # This doesn't return the same thing as the builtin map method.
-      result = self.enum_for(:map)
+      result = enum_for(:map)
     end
     result
   end
 
-  def my_inject
+  def my_inject(memo = nil, sym = nil)
+    # TODO: Implement symbol
+    if memo
+      my_each { |item| memo = yield(memo, item) }
+    else
+      memo = first
+      for item in self.drop(1)
+        memo = yield(memo, item)
+      end
+    end
+    memo
   end
-
-
 
   # Method to test my_inject
   def multiply_els(arr)
-
   end
 end
