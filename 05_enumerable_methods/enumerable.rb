@@ -23,16 +23,12 @@ module Enumerable
 
 
   def my_select
-    # TODO This doesn't seem to return the same as
+    # TODO This line doesn't seem to return the same as
     # the internal select method. Why?
     return self.to_enum(:select) unless block_given?
 
     results = []
-    self.my_each do |item|
-      if yield(item)
-        results << item
-      end
-    end
+    self.my_each { |item| results << item if yield(item) }
     results
   end
 
@@ -82,6 +78,15 @@ module Enumerable
   end
 
   def my_map
+    result = []
+    if block_given?
+      self.my_each { |item| result << yield(item) }
+    else
+      # TODO Same issue as with the my_select method.
+      # This doesn't return the same thing as the builtin map method.
+      result = self.enum_for(:map)
+    end
+    result
   end
 
   def my_inject

@@ -193,3 +193,26 @@ describe 'the my_count method' do
     expect(grr.my_count(&ab)).to eq(3)
   end
 end
+
+
+# Test series my_map
+describe 'the my_map method' do
+
+  # Test blocks
+  bb = Proc.new { |i| i*i }
+  bc = Proc.new { 'cat' }
+
+  # Tests
+  xit 'returns an enumerator if no block is given' do
+    expect((1..4).my_map).to eq((1..4).map)
+  end
+
+  it 'returns a new array where each element fulfils the block condition' do
+    expect((1..4).my_map(&bb)).to eq((1..4).map(&bb))
+  end
+
+  it 'returns a new array correctly' do
+    expect((1..4).map(&bc)).to eq((1..4).map(&bc))
+  end
+
+end
