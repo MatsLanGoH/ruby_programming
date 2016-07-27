@@ -76,9 +76,11 @@ module Enumerable
     count
   end
 
-  def my_map
+  def my_map(proc = nil)
     result = []
-    if block_given?
+    if proc && block_given?
+      result = proc.call
+    elsif block_given?
       my_each { |item| result << yield(item) }
     else
       # TODO: Same issue as with the my_select method.
@@ -87,65 +89,7 @@ module Enumerable
     end
     result
   end
-  alias :my_collect :my_map
-
-  # def my_inject(*args)
-  #   return nil unless self.any?
-  #   raise ArgumentError if args.count > 2
-  #   case args.count
-  #   when 2
-  #     memo = args[0]
-  #     operator = args[1]
-  #   when 1
-  #     if args[0].is_a? Symbol
-  #       operator = args[0]
-  #     else
-  #       memo = args[0]
-  #     end
-  #   end
-
-  #   memo = memo || self.first # shift returns and drops the first element of array
-
-  #   self.my_each { |item| memo = operator ? item.send(operator, item) : yield(memo, item) }
-  #   memo
-  # end
-  #
-
-
-  # def my_inject(initial=nil)
-  #   if initial.nil?
-  #     total = self[0]
-  #     arr = self[1...self.length]
-  #     arr.my_each {|val| total = yield(total, val)}
-  #   else
-  #     total = initial
-  #     self.my_each {|val| total = yield(total, val)}
-  #   end
-  #   total
-  # end
-
-  # #   # TODO: Implement symbol
-  # #   if block_given?
-  # #     if initial
-  # #       memo = initial
-  # #       my_each { |item| memo = yield(memo, item) }
-  # #     else
-  # #       memo = first
-  # #       for item in drop(1)
-  # #         memo = yield(memo, item)
-  # #       end
-  # #     end
-  # #   else
-  # #     if initial.is_a? Symbol
-  # #       memo = first.shift
-  # #       for item in self
-  # #         memo = sym.call(item)
-  # #       end
-  # #     end
-  # #   end
-  # #   memo
-  # # end
-  # alias :my_reduce :my_inject
+  alias my_collect my_map
 
   def my_inject(accumulator = nil, operation = nil, &block)
     if accumulator.nil? && operation.nil? && block.nil?
@@ -162,13 +106,13 @@ module Enumerable
     end
 
     block = case operation
-      when Symbol
-        lambda { |acc, value| acc.send(operation, value) }
-      when nil
-        block
-      else
-        raise ArgumentError, "the operation provided must be a symbol"
-    end
+            when Symbol
+              lambda { |acc, value| acc.send(operation, value) }
+            when nil
+              block
+            else
+              raise ArgumentError, "the operation provided must be a symbol"
+            end
 
     if accumulator.nil?
       ignore_first = true
@@ -186,9 +130,12 @@ module Enumerable
     accumulator
   end
 
-  alias :my_reduce :my_inject
+  alias my_reduce my_inject
+end
 
-  # Method to test my_inject
-  def multiply_els(arr)
-  end
+# Method to test my_inject
+def multiply_els(arr)
+  product = 1
+  arr.each { |el| product * el }
+  product
 end

@@ -242,6 +242,13 @@ describe 'the my_inject method' do
   it 'correctly finds the longest word in an array' do
     expect(hrr.my_inject(&cd)).to eq('chunky')
   end
+
+  it 'correctly calculates multiplies the elements in an array' do
+    els = [2, 4, 5]
+    result = els.my_inject(:*)
+    expect(result).to eq(40)
+
+  end
 end
 
 # describe 'the n_inject method' do
