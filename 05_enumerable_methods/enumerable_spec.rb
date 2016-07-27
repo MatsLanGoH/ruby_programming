@@ -223,12 +223,16 @@ describe 'the my_inject method' do
   end
 
   # Tests
-  it 'correctly sums some numbers using a block and inject' do
+  it 'correctly sums some numbers using a symbol' do
     expect((5..10).my_inject(:+)).to eq(45)
   end
 
-  it 'correctly sums some numbers using a block and inject' do
+  it 'correctly sums some numbers using a block' do
     expect((5..10).my_inject(&cb)).to eq(45)
+  end
+
+  it 'correctly sums some numbers using a symbol' do
+    expect((5..10).my_inject(:*)).to eq(151_200)
   end
 
   it 'correctly multiplies some numbers using a block and inject' do
@@ -239,3 +243,56 @@ describe 'the my_inject method' do
     expect(hrr.my_inject(&cd)).to eq('chunky')
   end
 end
+
+# describe 'the n_inject method' do
+#   it 'sums all numbers' do
+#     items = (1..4)
+#     result = items.n_reduce(0) do |accumulator, element|
+#       accumulator + element
+#     end
+#     expect(result).to eq(10)
+#   end
+
+#   it 'returns the accumulator if no value was provided' do
+#     items = []
+#     result = items.n_reduce(50) do |accumulator, element|
+#       accumulator + element
+#     end
+#     expect(result).to eq(50)
+#   end
+
+#   it 'operates the execution provided' do
+#     items = (1..4)
+#     result = items.n_inject(0, :+)
+#     expect(result).to eq(10)
+#   end
+
+#   it 'fails if both a symbol and a block are provided' do
+#     items = (1..4)
+#     expect do
+#       items.n_inject(0, :+) do |accumulator, element|
+#         accumulator + element
+#       end
+#     end.to raise_error(ArgumentError, "you must provide either an operation symbol or a block, not both")
+#   end
+
+#   it 'fails if the operation provided is not a symbol' do
+#     items = (1..4)
+#     expect do
+#       items.n_inject(0, '+')
+#     end.to raise_error(ArgumentError, "the operation provided must be a symbol")
+#   end
+
+#   it 'executes the operation provided without an initial value' do
+#     items = (1..4)
+#     result = items.n_reduce(:+)
+#     expect(result).to eq(10)
+#   end
+
+#   it 'executes the block provided without an initial value' do
+#     items = (1..4)
+#     result = items.n_reduce do |accumulator, element|
+#       accumulator + element
+#     end
+#     expect(result).to eq(10)
+#   end
